@@ -1,0 +1,10 @@
+[workspace]
+resolver = "2"
+members = [
+    "ch01-ownership",
+    "ch01-ownership/exercises",
+]
+
+[workspace.package]
+edition = "2021"
+license = "Apache-2.0"

@@ -1,0 +1,27 @@
+# PIPELINE PARITY: This config mirrors .github/workflows/safety-gate.yml.
+# When editing this file, update the workflow to match.
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+
+  - repo: local
+    hooks:
+      - id: forbidden-patterns
+        name: Check for forbidden patterns
+        entry: bash -c 'grep -rEn "192\.168\.[0-9]+\.[0-9]+|/home/[a-z][a-z0-9_-]+/|geforcenuc|gnuc[^a-z]|server1[^a-z]|BEGIN (RSA|DSA|EC|OPENSSH) PRIVATE KEY" --include="*.rs" --include="*.py" --include="*.toml" --include="*.yml" --include="*.yaml" --include="*.md" --include="*.json" --include="*.sh" "$@" && echo "::error::Forbidden pattern found" && exit 1 || exit 0'
+        language: system
+        types: [text]

@@ -1,0 +1,33 @@
+# Rust
+/target/
+**/*.rs.bk
+Cargo.lock
+
+# Python (for PyO3 chapters)
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets — these must NEVER be committed
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*
+*secret*
+*token*
