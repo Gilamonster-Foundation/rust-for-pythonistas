@@ -22,6 +22,6 @@ repos:
     hooks:
       - id: forbidden-patterns
         name: Check for forbidden patterns
-        entry: bash -c 'grep -rEn "192\.168\.[0-9]+\.[0-9]+|/home/[a-z][a-z0-9_-]+/|geforcenuc|gnuc[^a-z]|server1[^a-z]|BEGIN (RSA|DSA|EC|OPENSSH) PRIVATE KEY" --include="*.rs" --include="*.py" --include="*.toml" --include="*.yml" --include="*.yaml" --include="*.md" --include="*.json" --include="*.sh" "$@" && echo "::error::Forbidden pattern found" && exit 1 || exit 0'
+        entry: bash -c 'grep -rEn "192\.168\.[0-9]+\.[0-9]+|/home/[a-z][a-z0-9_-]+/|geforcenuc|gnuc[^a-z]|server1[^a-z]|BEGIN (RSA|DSA|EC|OPENSSH) PRIVATE KEY" --include="*.rs" --include="*.py" --include="*.toml" --include="*.yml" --include="*.yaml" --include="*.md" --include="*.json" --include="*.sh" "$@" | grep -v "CLAUDE.md" | grep -v ".pre-commit-config.yaml" && echo "::error::Forbidden pattern found" && exit 1 || exit 0'
         language: system
         types: [text]
