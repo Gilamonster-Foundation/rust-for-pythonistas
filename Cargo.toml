@@ -9,6 +9,8 @@ members = [
     "ch03-traits-and-generics/exercises",
     "ch04-content-addressable",
     "ch04-content-addressable/exercises",
+    "ch05-cli-tools",
+    "ch05-cli-tools/exercises",
 ]
 
 [workspace.package]
