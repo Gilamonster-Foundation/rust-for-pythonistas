@@ -80,4 +80,15 @@ jobs:
         run: cargo clippy --workspace --all-targets -- -D warnings
 
       - name: Tests (excluding unsolved exercises)
-        run: cargo test --workspace --exclude ch01-exercises
+        run: |
+          # Auto-discover exercise crates (they contain todo!() stubs)
+          # and exclude them from the test run. Exercises are compiled by
+          # the clippy step above, so broken stubs still fail CI.
+          EXCLUDES=()
+          for crate in $(cargo metadata --no-deps --format-version 1 \
+                         | python3 -c "import json,sys; [print(p['name']) for p in json.load(sys.stdin)['packages']]" \
+                         | grep -- '-exercises$'); do
+            EXCLUDES+=(--exclude "$crate")
+          done
+          echo "Excluding: ${EXCLUDES[*]}"
+          cargo test --workspace "${EXCLUDES[@]}"
