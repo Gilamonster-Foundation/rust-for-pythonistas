@@ -5,6 +5,8 @@ members = [
     "ch01-ownership/exercises",
     "ch02-error-handling",
     "ch02-error-handling/exercises",
+    "ch03-traits-and-generics",
+    "ch03-traits-and-generics/exercises",
 ]
 
 [workspace.package]
