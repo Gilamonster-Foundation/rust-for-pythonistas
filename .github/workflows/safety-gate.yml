@@ -1,4 +1,5 @@
-# HOOK PARITY: This workflow mirrors .pre-commit-config.yaml.
+# HOOK PARITY: This workflow mirrors .pre-commit-config.yaml (safety checks)
+# and the local dev workflow (Rust checks).
 # When editing this file, update the pre-commit config to match.
 
 name: Safety Gate
@@ -13,6 +14,9 @@ permissions:
   contents: read
 
 jobs:
+  # ---------------------------------------------------------------
+  # Safety: secrets and forbidden patterns
+  # ---------------------------------------------------------------
   secrets-scan:
     name: Scan for secrets
     runs-on: ubuntu-latest
@@ -58,8 +62,11 @@ jobs:
           fi
           echo "No forbidden patterns found."
 
-  rust-checks:
-    name: Rust lint and test
+  # ---------------------------------------------------------------
+  # Rust: lint the entire workspace (examples + exercises)
+  # ---------------------------------------------------------------
+  lint:
+    name: Lint (fmt + clippy)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -68,11 +75,82 @@ jobs:
         with:
           components: rustfmt, clippy
 
+      - uses: Swatinem/rust-cache@v2
+
       - name: Format check
         run: cargo fmt --all -- --check
 
-      - name: Clippy
+      - name: Clippy (full workspace)
         run: cargo clippy --workspace --all-targets -- -D warnings
 
-      - name: Tests
-        run: cargo test --workspace
+  # ---------------------------------------------------------------
+  # Rust: test examples (chapter crates, NOT exercise crates)
+  #
+  # Exercise crates contain todo!() stubs that panic at runtime.
+  # That's by design — students fill them in. We verify exercises
+  # COMPILE (via clippy above) but only RUN tests on the example
+  # crates where all tests should pass.
+  # ---------------------------------------------------------------
+  test-examples:
+    name: Test examples
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Discover and test example crates
+        run: |
+          # Find all chapter crates that are NOT exercise crates.
+          # Convention: exercise crates live in ch*/exercises/
+          EXAMPLE_CRATES=$(
+            cargo metadata --no-deps --format-version 1 \
+              | python3 -c "
+          import json, sys
+          meta = json.load(sys.stdin)
+          for pkg in meta['packages']:
+              if 'exercises' not in pkg['manifest_path']:
+                  print(f'-p {pkg[\"name\"]}', end=' ')
+          "
+          )
+
+          echo "Testing: $EXAMPLE_CRATES"
+          # shellcheck disable=SC2086
+          cargo test $EXAMPLE_CRATES
+
+  # ---------------------------------------------------------------
+  # Rust: verify exercise crates BUILD (compile + link)
+  #
+  # This catches broken test code, missing imports, or type errors
+  # in the exercise scaffolding — without running the todo!() stubs.
+  # ---------------------------------------------------------------
+  build-exercises:
+    name: Build exercises (no run)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Build exercise test binaries
+        run: |
+          # Build test binaries for exercise crates without running them.
+          # This verifies the test code compiles against the todo!() stubs.
+          EXERCISE_CRATES=$(
+            cargo metadata --no-deps --format-version 1 \
+              | python3 -c "
+          import json, sys
+          meta = json.load(sys.stdin)
+          for pkg in meta['packages']:
+              if 'exercises' in pkg['manifest_path']:
+                  print(f'-p {pkg[\"name\"]}', end=' ')
+          "
+          )
+
+          echo "Building (no run): $EXERCISE_CRATES"
+          # shellcheck disable=SC2086
+          cargo test --no-run $EXERCISE_CRATES
