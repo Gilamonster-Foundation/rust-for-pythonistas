@@ -1,6 +1,8 @@
 [workspace]
 resolver = "2"
 members = [
+    "ch00-getting-started",
+    "ch00-getting-started/exercises",
     "ch01-ownership",
     "ch01-ownership/exercises",
     "ch02-error-handling",

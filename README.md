@@ -22,6 +22,7 @@ demanding the user carry it for them.
 
 | # | Title | Python Concept | Rust Concept |
 |---|-------|---------------|--------------|
+| 0 | **Getting Started** | `pip`, `venv`, `python hello.py` | `cargo`, `rustup`, `cargo run` |
 | 1 | **Ownership** | Reference counting, `del`, `with` blocks | Ownership, borrowing, lifetimes, RAII |
 | 2 | **Error Handling** | `try/except`, `None`, `LBYL vs EAFP` | `Result<T,E>`, `Option<T>`, `?` operator |
 | 3 | **Traits & Generics** | ABCs, Protocols, duck typing | Traits, generics, trait bounds |
