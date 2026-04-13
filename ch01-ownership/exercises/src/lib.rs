@@ -142,7 +142,9 @@ impl Logger {
 
 impl Drop for Logger {
     fn drop(&mut self) {
-        todo!("Push \"logger:closed\" onto self.entries")
+        // TODO: Push "logger:closed" onto self.entries
+        // (We can't use todo!() here because panic in Drop aborts the process.
+        // Replace this comment block with your implementation.)
     }
 }
 
