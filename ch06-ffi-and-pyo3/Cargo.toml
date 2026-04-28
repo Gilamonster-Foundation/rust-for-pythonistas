@@ -1,0 +1,11 @@
+[package]
+name = "ch06-ffi-and-pyo3"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+description = "Chapter 6: FFI & PyO3 — the bridge between Rust and Python"
+
+[dependencies]
+blake3 = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
