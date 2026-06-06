@@ -1,0 +1,12 @@
+[package]
+name = "ch06-exercises"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+description = "Exercises for Chapter 6: FFI & PyO3"
+
+# No dependencies — and deliberately no pyo3. The exercises practice the
+# *shapes* PyO3 works with: C-ABI boundaries, conversion-friendly
+# signatures, and error types that map cleanly to Python exceptions.
+# All of it is pure Rust, so you can solve the chapter without a Python
+# interpreter installed.

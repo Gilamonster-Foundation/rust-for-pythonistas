@@ -11,6 +11,8 @@ members = [
     "ch04-content-addressable/exercises",
     "ch05-cli-tools",
     "ch05-cli-tools/exercises",
+    "ch06-ffi-pyo3",
+    "ch06-ffi-pyo3/exercises",
 ]
 
 [workspace.package]
