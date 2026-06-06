@@ -13,6 +13,8 @@ members = [
     "ch05-cli-tools/exercises",
     "ch06-ffi-pyo3",
     "ch06-ffi-pyo3/exercises",
+    "ch07-pyo3-house-style",
+    "ch07-pyo3-house-style/exercises",
 ]
 
 [workspace.package]

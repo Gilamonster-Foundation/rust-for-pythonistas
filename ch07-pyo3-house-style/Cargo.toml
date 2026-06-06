@@ -1,0 +1,24 @@
+# The house style in one Cargo.toml:
+#
+# - pyo3 is OPTIONAL. Plain `cargo build` / `cargo test` never compile it,
+#   so crates.io users (and this repo's CI) pay nothing for the Python face.
+# - The `python` feature turns on the binding layer at the bottom of
+#   src/lib.rs: `cargo check --features python`.
+# - abi3-py39 builds one wheel that works on every CPython >= 3.9 instead
+#   of one wheel per Python version.
+# - A real published project would also set crate-type = ["cdylib", "rlib"]
+#   and build wheels with maturin; we omit that here so this teaching crate
+#   stays a plain Rust library.
+
+[package]
+name = "ch07-pyo3-house-style"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+description = "Chapter 7: PyO3 House Style — feature-gated bindings, error mapping, zero-copy"
+
+[dependencies]
+pyo3 = { version = "0.23", optional = true, features = ["extension-module", "abi3-py39"] }
+
+[features]
+python = ["dep:pyo3"]
