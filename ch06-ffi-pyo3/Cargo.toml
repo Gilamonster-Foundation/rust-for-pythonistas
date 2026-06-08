@@ -1,0 +1,39 @@
+[package]
+name = "ch06-ffi-pyo3"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+description = "Chapter 6: FFI & PyO3 — packaging Rust as a Python module"
+
+[lib]
+# A Python extension module must be a `cdylib`: a C-compatible shared
+# library that CPython can dlopen at import time. The `rlib` keeps this
+# crate usable as a plain Rust library too — that's what `cargo test`
+# links against. Real mixed Rust/Python crates ship with exactly this
+# pair of crate types.
+crate-type = ["cdylib", "rlib"]
+
+[features]
+# The Python bindings are OFF by default. This is how real mixed crates
+# ship: the core logic is pure Rust (testable with plain `cargo test`,
+# no Python interpreter anywhere in sight), and the PyO3 glue is an
+# optional layer that only maturin/CI wheel builds turn on:
+#
+#   cargo test                          # pure Rust — what this repo's CI runs
+#   cargo check --features python       # type-check the binding layer
+#   maturin develop --features python   # build + install into a venv
+#
+# "dep:pyo3" means: enabling the `python` feature pulls in the optional
+# pyo3 dependency below. Nothing else does.
+python = ["dep:pyo3"]
+
+[dependencies]
+# `optional = true` — pyo3 is only compiled when the `python` feature is on.
+#
+# - "extension-module" tells pyo3 NOT to link libpython. The Python
+#   interpreter that imports the module provides the symbols at runtime.
+#   (Without this, you'd be embedding Python in Rust — a different use case.)
+# - "abi3-py39" builds against Python's stable ABI, version 3.9+. One
+#   wheel works on 3.9, 3.10, 3.11, 3.12, 3.13... instead of one wheel
+#   per interpreter version.
+pyo3 = { version = "0.23", features = ["extension-module", "abi3-py39"], optional = true }

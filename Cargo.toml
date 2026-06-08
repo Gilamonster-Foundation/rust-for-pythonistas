@@ -9,6 +9,14 @@ members = [
     "ch03-traits-and-generics/exercises",
     "ch04-content-addressable",
     "ch04-content-addressable/exercises",
+    "ch05-cli-tools",
+    "ch05-cli-tools/exercises",
+    "ch06-ffi-pyo3",
+    "ch06-ffi-pyo3/exercises",
+    "ch07-pyo3-house-style",
+    "ch07-pyo3-house-style/exercises",
+    "ch08-escaping-the-gil",
+    "ch08-escaping-the-gil/exercises",
 ]
 
 [workspace.package]

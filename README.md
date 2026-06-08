@@ -34,19 +34,19 @@ giving up everything that makes Python productive.
 | 2 | **Error Handling** | `try/except`, `None`, `LBYL vs EAFP` | `Result<T,E>`, `Option<T>`, `?` operator |
 | 3 | **Traits & Generics** | ABCs, Protocols, duck typing | Traits, generics, trait bounds |
 | 4 | **Content-Addressable Data** | `hashlib`, `json.dumps(sort_keys=True)` | BLAKE3, serde, CIDs, deterministic serialization |
-
-## Course Roadmap
-
-The arc from here bends toward the interop boundary — each planned chapter
-takes one thing Python developers wish they had and shows how Rust provides
-it *to* Python, not instead of it:
-
-| # | Title | Python Concept | Rust Concept |
-|---|-------|---------------|--------------|
 | 5 | **CLI Tools** | `argparse`, `click` | `clap`, structured output, self-documenting tools |
 | 6 | **FFI & PyO3** | `ctypes`, C extensions, wheels | PyO3 bindings, `maturin`, packaging Rust as a Python module |
 | 7 | **PyO3 House Style** | "how should this feel from Python?" | feature-gated bindings, error mapping to exceptions, zero-copy data exchange |
 | 8 | **Escaping the GIL** | `threading` vs `multiprocessing`, the GIL | `Send`/`Sync`, `rayon`, releasing the GIL across FFI calls |
+
+## Course Roadmap
+
+The arc continues toward the interop boundary — each planned chapter takes
+one thing Python developers wish they had and shows how Rust provides it
+*to* Python, not instead of it:
+
+| # | Title | Python Concept | Rust Concept |
+|---|-------|---------------|--------------|
 | 9 | **Types That Travel** | type hints, `mypy`, runtime validation | newtypes, exhaustive enums, type-safe IDs surfacing as Python types |
 | 10 | **Case Study: Speed Where It Counts** | profiling a real hot path | swapping it for a published Rust crate and measuring the win |
 

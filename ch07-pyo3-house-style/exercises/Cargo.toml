@@ -1,0 +1,11 @@
+# Note: NO pyo3 here, and that's deliberate. The house-style disciplines —
+# designed error enums, exhaustive exception mapping, borrow-don't-clone,
+# Pythonic API shape — are all pure-Rust design problems. You practice them
+# with nothing but the compiler.
+
+[package]
+name = "ch07-exercises"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+description = "Exercises for Chapter 7: PyO3 House Style"
